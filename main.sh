@@ -14,9 +14,15 @@ mkdir tmp
 # Sort and merge each bed file
 for bed_file in $(find ./tmp -name "*.bed" -printf "%f\n");
 do
-    bedtools sort -faidx ${FASTA_IDX} -i tmp/${bed_file} > tmp/sorted${bed_file}
-    bedtools merge -i tmp/sorted${bed_file} > tmp/merged${bed_file}
-    bedtools sort -faidx ${FASTA_IDX} -i tmp/merged${bed_file} > ${PREFIX}${bed_file}
+    # Merge all files except "genes"
+    if [[ ! ${bed_file} =~ ".genes." ]]
+    then
+        bedtools sort -faidx ${FASTA_IDX} -i tmp/${bed_file} > tmp/sorted${bed_file}
+        bedtools merge -i tmp/sorted${bed_file} > tmp/merged${bed_file}
+        bedtools sort -faidx ${FASTA_IDX} -i tmp/merged${bed_file} > ${PREFIX}${bed_file}
+    else
+        bedtools sort -faidx ${FASTA_IDX} -i tmp/${bed_file} > ${PREFIX}${bed_file}
+    fi
 done
 
 # Generate genome.txt file for bedtools complement

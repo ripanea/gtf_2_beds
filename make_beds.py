@@ -25,7 +25,7 @@ class BEDRecord(object):
 
 class Gene(object):
 
-    def __init__(self, gene_id, chrom, start, end, gene_type):
+    def __init__(self, gene_id, chrom, start, end, gene_type, gene_name):
 
         self.gene_id = gene_id
 
@@ -34,6 +34,7 @@ class Gene(object):
         self.end = int(end)
 
         self.gene_type = gene_type
+        self.gene_name = gene_name
 
         self.transcripts = OrderedDict()
 
@@ -64,8 +65,11 @@ class Gene(object):
 
         return bed_records
 
-    def as_bed(self):
-        return BEDRecord(self.chrom, self.start, self.end)
+    def as_bed(self, with_gene_name=False):
+        if with_gene_name:
+            return BEDRecord(self.chrom, self.start, self.end, info=[self.gene_name])
+        else:
+            return BEDRecord(self.chrom, self.start, self.end)
 
 
 class Transcript(object):
@@ -144,7 +148,8 @@ def parse_gtf(gtf_file):
                                 chrom=annot_data[0],
                                 start=annot_data[3],
                                 end=annot_data[4],
-                                gene_type=annot_info["gene_type"])
+                                gene_type=annot_info["gene_type"],
+                                gene_name=annot_info["gene_name"])
 
                 # Record new gene transcript
                 genes[annot_info["gene_id"]] = new_gene
@@ -281,8 +286,7 @@ def write_genes_bed(genes, prefix):
     with open("{0}.genes.bed".format(prefix), "w") as out:
 
         for gene_obj in genes.values():
-
-            out.write(str(gene_obj.as_bed()))
+            out.write(str(gene_obj.as_bed(with_gene_name=True)))
 
 
 def main():
