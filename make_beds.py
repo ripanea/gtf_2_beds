@@ -252,7 +252,7 @@ def write_rrna_bed(genes, prefix):
 
         for gene_obj in genes.values():
 
-            if gene_obj.gene_type.lower() == "rrna":
+            if gene_obj.gene_type.lower() in ["rrna", "rrna_pseudogene"]:
                 out.write(str(gene_obj.as_bed()))
 
 
@@ -262,7 +262,7 @@ def write_mirna_bed(genes, prefix):
 
         for gene_obj in genes.values():
 
-            if gene_obj.gene_type.lower() == "mirna":
+            if gene_obj.gene_type.lower() in ["mirna", "mirna_pseudogene"]:
                 out.write(str(gene_obj.as_bed()))
 
 
@@ -272,7 +272,7 @@ def write_lincrna_bed(genes, prefix):
 
         for gene_obj in genes.values():
 
-            if gene_obj.gene_type.lower() == "lincrna":
+            if gene_obj.gene_type.lower() in ["lincrna", "lincrna_pseudogene"]:
                 out.write(str(gene_obj.as_bed()))
 
 
