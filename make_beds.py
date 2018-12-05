@@ -140,6 +140,12 @@ def parse_gtf(gtf_file):
                 # Record info data
                 annot_info[info_type] = info_value.strip('"')
 
+            # Check if the gene type label is "gene_type" or "gene_biotype"
+            if "gene_type" not in annot_info:
+                type_label = "biotype"
+            else:
+                type_label = "type"
+
             # Check if annotation is new gene
             if annot_data[2] == "gene":
 
@@ -148,7 +154,7 @@ def parse_gtf(gtf_file):
                                 chrom=annot_data[0],
                                 start=annot_data[3],
                                 end=annot_data[4],
-                                gene_type=annot_info["gene_type"],
+                                gene_type=annot_info["gene_{0}".format(type_label)],
                                 gene_name=annot_info["gene_name"])
 
                 # Record new gene transcript
