@@ -7,9 +7,9 @@ This tool splits a comprehensive GTF file into 8 separate BED files:
 - *PREFIX*.utrs.bed - All UTRs positions
 - *PREFIX*.intergenic.bed - All intergenic positions
 - *PREFIX*.genes.bed - All genes
-- *PREFIX*.miRNA.bed - All miRNA genes
-- *PREFIX*.rRNA.bed - All rRNA genes
-- *PREFIX*.lincRNA.bed - All lincRNA genes
+- *PREFIX*.miRNA.bed - All miRNA (pseudo)genes
+- *PREFIX*.rRNA.bed - All rRNA (pseudo)genes
+- *PREFIX*.lincRNA.bed - All lincRNA (pseudo)genes
 
 ## Requirements
 
