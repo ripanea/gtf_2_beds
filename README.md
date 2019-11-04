@@ -21,8 +21,8 @@ There are three requirement for this script:
 
 ## Usage
 
-    ./main.sh REFERENCE.fasta.fai ANNOTATION.gtf PREFIX
+    ./main.sh -i REFERENCE.fasta.fai -g ANNOTATION.gtf -o PREFIX
 
 ### Example
 
-    ./main.sh GRCh38.genome.fa.fai gencode.v28.annotation.gtf gencode.v28
+    ./main.sh -i GRCh38.genome.fa.fai -g gencode.v28.annotation.gtf -o gencode.v28
