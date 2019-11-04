@@ -49,14 +49,6 @@ class Gene(object):
 
         return bed_records
 
-    def get_introns(self):
-
-        bed_records = []
-        for transcript in self.transcripts.values():
-            bed_records.extend(transcript.get_introns())
-
-        return bed_records
-
     def get_utrs(self):
 
         bed_records = []
@@ -96,19 +88,6 @@ class Transcript(object):
 
     def get_exons(self):
         return [BEDRecord(self.chrom, start, end) for start, end in self.exons]
-
-    def get_introns(self):
-
-        introns = []
-
-        for exon_id in range(1, len(self.exons)):
-
-            prev_exon_end = self.exons[exon_id-1][1]
-            cur_exon_start = self.exons[exon_id][0]
-
-            introns.append(BEDRecord(self.chrom, prev_exon_end+1, cur_exon_start-1))
-
-        return introns
 
     def add_utr(self, start, end):
         self.utrs.append((int(start), int(end)))
@@ -237,16 +216,6 @@ def write_exons_bed(genes, prefix):
                 out.write(str(exon))
 
 
-def write_introns_bed(genes, prefix):
-
-    with open("{0}.introns.bed".format(prefix), "w") as out:
-
-        for gene_obj in genes.values():
-
-            for intron in gene_obj.get_introns():
-                out.write(str(intron))
-
-
 def write_utrs_bed(genes, prefix):
 
     with open("{0}.utrs.bed".format(prefix), "w") as out:
@@ -314,22 +283,19 @@ def main():
     print("Step 2: Writing BED file with exon positions")
     write_exons_bed(genes, args.output_prefix)
 
-    print("Step 3: Writing BED file with intron positions")
-    write_introns_bed(genes, args.output_prefix)
-
-    print("Step 4: Writing BED file with UTR positions")
+    print("Step 3: Writing BED file with UTR positions")
     write_utrs_bed(genes, args.output_prefix)
 
-    print("Step 5: Writing BED file with rRNA genes")
+    print("Step 4: Writing BED file with rRNA genes")
     write_rrna_bed(genes, args.output_prefix)
 
-    print("Step 6: Writing BED file with miRNA genes")
+    print("Step 5: Writing BED file with miRNA genes")
     write_mirna_bed(genes, args.output_prefix)
 
-    print("Step 7: Writing BED file with lincRNA genes")
+    print("Step 6: Writing BED file with lincRNA genes")
     write_lincrna_bed(genes, args.output_prefix)
 
-    print("Step 8: Writing BED file with all the genes")
+    print("Step 7: Writing BED file with all the genes")
     write_genes_bed(genes, args.output_prefix)
 
 

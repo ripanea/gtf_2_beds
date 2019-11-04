@@ -82,6 +82,14 @@ do
     fi
 done
 
+# Subtract exons from the current gene file to get the introns
+bedtools subtract -a "${PREFIX}".genes.bed -b "${PREFIX}".exons.bed > tmp/.introns.bed
+
+# Resort and merge the new introns file
+bedtools sort -faidx "${FASTA_IDX}" -i tmp/.introns.bed > tmp/sorted.introns.bed
+bedtools merge -i tmp/sorted.introns.bed > tmp/merged.introns.bed
+bedtools sort -faidx "${FASTA_IDX}" -i tmp/merged.introns.bed > "${PREFIX}".introns.bed
+
 # Generate genome.txt file for bedtools complement
 cut -f1,2 "${FASTA_IDX}" > tmp/genome.txt
 
